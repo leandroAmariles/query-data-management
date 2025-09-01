@@ -49,5 +49,4 @@ public interface Mapper {
     List<AccountResponse> entityListToDtoAccount(List<Account> accounts);
 
 
-
 }

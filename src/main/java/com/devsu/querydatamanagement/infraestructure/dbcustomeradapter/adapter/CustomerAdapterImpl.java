@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -50,9 +51,13 @@ public class CustomerAdapterImpl implements ICustomerAdapter {
     }
 
     @Override
-    public Client createClient(ClientRequest client) {
+    public Client createClient(ClientRequest client) throws Exception {
         Client clientEntity = mapper.dtoToEntity(client);
+        if (!existsByIdentification(clientEntity.getIdentification())) {
+            throw new Exception();
+        }
         return clientRepository.save(clientEntity);
+
     }
 
     @Override
@@ -102,7 +107,20 @@ public class CustomerAdapterImpl implements ICustomerAdapter {
         return transactionsRepository.save(transactions);
     }
 
+    @Override
+    public Boolean validateBalance(Long accountId, BigDecimal amount) {
+        Account account = accountRepository.findAccountByAccountId(accountId).orElseThrow();
+        return validateBalance(account.getAvailableBalance(), amount);
+    }
 
+    boolean validateBalance(BigDecimal availableBalance, BigDecimal amount) {
+        return availableBalance.compareTo(amount) >= 0;
+    }
+
+
+    boolean existsByIdentification(String identification) {
+        return clientRepository.existsByIdentification(identification);
+    }
 
 
 }

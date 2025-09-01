@@ -5,9 +5,12 @@ import com.devsu.querydatamanagement.infraestructure.controller.dto.out.ClientRe
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.TransactionResponse;
 import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.ClientRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CommandWriteService {
+
+    boolean canProcessWithTransaction(Long accountId, BigDecimal amount);
 
     List<AccountResponse> loadAccountsData();
 
@@ -15,5 +18,5 @@ public interface CommandWriteService {
 
     List<ClientResponse> loadClientsData();
 
-    void SaveCustomer(ClientRequest clientRequest);
+    ClientResponse SaveCustomer(ClientRequest clientRequest) throws Exception;
 }

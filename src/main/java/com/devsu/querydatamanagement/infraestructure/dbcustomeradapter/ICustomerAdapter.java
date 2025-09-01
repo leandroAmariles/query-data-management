@@ -11,6 +11,7 @@ import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Cl
 import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.ClientRequest;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Transactions;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ICustomerAdapter {
@@ -21,7 +22,7 @@ public interface ICustomerAdapter {
 
     List<ClientResponse> loadClientsData();
 
-    Client createClient(ClientRequest client);
+    Client createClient(ClientRequest client) throws Exception;
 
     Client updateClient(ClientRequest client);
 
@@ -34,5 +35,7 @@ public interface ICustomerAdapter {
     Transactions createTransaction(TransactionRequest transaction);
 
     Transactions updateTransaction(TransactionRequest transaction);
+
+    Boolean validateBalance(Long accountId, BigDecimal amount);
 
 }

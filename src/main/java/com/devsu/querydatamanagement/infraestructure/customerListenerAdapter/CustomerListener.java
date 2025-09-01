@@ -1,8 +1,15 @@
 package com.devsu.querydatamanagement.infraestructure.customerListenerAdapter;
 
+import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.EventResponse;
+
+
 public interface CustomerListener {
 
-    public void clientEvent(String eventJson);
+    EventResponse balanceCheck(String transactionRequest);
+
+     EventResponse clientEvent(String eventJson);
+
+
 
 
 }

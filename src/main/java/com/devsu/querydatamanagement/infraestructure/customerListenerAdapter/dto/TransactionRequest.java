@@ -1,12 +1,14 @@
 package com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto;
 
+import java.math.BigDecimal;
+
 public record TransactionRequest (
 
          Long idTransaction,
 
          String transactionType,
 
-         String amount,
+         BigDecimal amount,
         
          Long idAccount,
 

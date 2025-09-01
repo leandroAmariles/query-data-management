@@ -1,5 +1,6 @@
 package com.devsu.querydatamanagement.application.service;
 
+import com.devsu.querydatamanagement.application.service.mapper.ResponsesMapper;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.AccountResponse;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.ClientResponse;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.TransactionResponse;
@@ -9,8 +10,10 @@ import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.ICustomerAdapter;
 import com.devsu.querydatamanagement.infraestructure.kafkaProducer.KafkaPublisherAdapter;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -22,10 +25,17 @@ public class CommandWriteServiceImpl implements CommandWriteService {
 
     private final KafkaPublisherAdapter kafkaPublisherAdapter;
 
+    private final ResponsesMapper responsesMapper = Mappers.getMapper(ResponsesMapper.class);
+
+
+    @Override
+    public boolean canProcessWithTransaction(Long accountId, BigDecimal amount) {
+        return iCustomerAdapter.validateBalance(accountId, amount);
+    }
 
     @Override
     public List<AccountResponse> loadAccountsData() {
-        return List.of();
+        return iCustomerAdapter.loadAccountsData();
     }
 
     @Override
@@ -39,9 +49,10 @@ public class CommandWriteServiceImpl implements CommandWriteService {
     }
 
     @Override
-    public void SaveCustomer(ClientRequest clientRequest) {
+    public ClientResponse SaveCustomer(ClientRequest clientRequest) throws Exception {
         Client client = iCustomerAdapter.createClient(clientRequest);
         kafkaPublisherAdapter.updateCustomerInfoInReadSide(client);
+        return responsesMapper.clientToClientResponse(client);
     }
 
 
