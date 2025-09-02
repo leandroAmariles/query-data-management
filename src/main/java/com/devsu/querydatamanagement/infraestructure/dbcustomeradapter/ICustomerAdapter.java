@@ -4,11 +4,11 @@ package com.devsu.querydatamanagement.infraestructure.dbcustomeradapter;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.AccountResponse;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.ClientResponse;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.TransactionResponse;
-import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.AccountRequest;
-import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.TransactionRequest;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.in.AccountRequest;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.in.TransactionRequest;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Account;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Client;
-import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.ClientRequest;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.in.ClientRequest;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Transactions;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public interface ICustomerAdapter {
 
     Client updateClient(ClientRequest client);
 
-    void deleteClientById(Long id);
+    Client deleteClientById(Long id);
 
     Account createAccount(AccountRequest account);
 

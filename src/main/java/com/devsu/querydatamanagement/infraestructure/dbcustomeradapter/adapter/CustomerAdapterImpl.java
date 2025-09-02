@@ -4,11 +4,11 @@ package com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.adapter;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.AccountResponse;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.ClientResponse;
 import com.devsu.querydatamanagement.infraestructure.controller.dto.out.TransactionResponse;
-import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.AccountRequest;
-import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.TransactionRequest;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.in.AccountRequest;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.in.TransactionRequest;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Account;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Client;
-import com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto.ClientRequest;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.in.ClientRequest;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.ICustomerAdapter;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Transactions;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.mapper.Mapper;
@@ -68,10 +68,11 @@ public class CustomerAdapterImpl implements ICustomerAdapter {
     }
 
     @Override
-    public void deleteClientById(Long id) {
+    public Client deleteClientById(Long id) {
         Client client = clientRepository.findByClientId(String.valueOf(id)).orElseThrow();
         client.setStatus(false);
         clientRepository.save(client);
+        return client;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.devsu.querydatamanagement.infraestructure.customerListenerAdapter.dto;
+package com.devsu.querydatamanagement.infraestructure.controller.dto.in;
 
 public record ClientRequest(
 

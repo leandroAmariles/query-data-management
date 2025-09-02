@@ -21,8 +21,7 @@ public class Client extends Person {
 
     @OneToMany(mappedBy = "client")
     private List<Account> accounts;
-
-
+    
     @OneToMany(mappedBy = "client")
     private List<Transactions> transactions;
 
