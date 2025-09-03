@@ -37,6 +37,9 @@ public class DataSourceConfig {
     @Value("${data.management.datasource.database.platform}")
     private String databasePlatform;
 
+    @Value("${data.management.datasource.schema}")
+    private String schema;
+
     @Value("${data.management.datasource.show-sql}")
     private String showSql;
 
@@ -88,6 +91,7 @@ public class DataSourceConfig {
         hikariConfig.setMaximumPoolSize(hikariMaximumPoolSize);
         hikariConfig.setMinimumIdle(minimumIdle);
         hikariConfig.setMaxLifetime(maxLifeTime);
+        hikariConfig.setSchema(schema);
         hikariConfig.setKeepaliveTime(keepaliveTime);
         hikariConfig.setValidationTimeout(validationTimeout);
         hikariConfig.setIdleTimeout(idleTimeout);

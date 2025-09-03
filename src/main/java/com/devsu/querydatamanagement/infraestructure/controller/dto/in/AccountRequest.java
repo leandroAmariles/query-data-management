@@ -12,6 +12,6 @@ public record AccountRequest (
 
          BigDecimal initialBalance,
 
-         Long clientId
+         Long personId
 ){
 }

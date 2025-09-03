@@ -22,15 +22,15 @@ public interface CommandWriteService {
 
     ClientResponse SaveCustomer(ClientRequest clientRequest) throws Exception;
 
-    ClientResponse updateClient(ClientRequest clientRequest);
+    ClientResponse updateClient(ClientRequest clientRequest, String id);
 
     void deleteClient(Long clientId);
 
     AccountResponse createAccount(AccountRequest accountRequest) throws Exception;
 
-    AccountResponse updateAccount(AccountRequest accountRequest);
+    AccountResponse updateAccount(AccountRequest accountRequest, String id);
 
     TransactionResponse saveTransaction(TransactionRequest transactionRequest) throws Exception;
 
-    TransactionResponse updateTransaction(TransactionRequest transactionRequest);
+    TransactionResponse updateTransaction(TransactionRequest transactionRequest, String id);
 }

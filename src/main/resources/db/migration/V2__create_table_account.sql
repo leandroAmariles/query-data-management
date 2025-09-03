@@ -1,17 +1,17 @@
-CREATE TABLE account
+CREATE TABLE ACCOUNT_DEVSU
 (
-    account_id        BIGINT       NOT NULL,
-    account_number    VARCHAR(255) NOT NULL,
-    account_type      VARCHAR(255) NULL,
-    initial_balance   DECIMAL NULL,
-    available_balance DECIMAL NULL,
+    accountId        BIGINT NOT NULL AUTO_INCREMENT,
+    accountNumber    VARCHAR(255) NOT NULL,
+    accountType      VARCHAR(255) NULL,
+    initialBalance   DECIMAL NULL,
+    availableBalance DECIMAL NULL,
     status            BIT(1)       NOT NULL,
-    client_id         BIGINT       NOT NULL,
-    CONSTRAINT pk_account PRIMARY KEY (account_id)
+    clientId         BIGINT       NOT NULL,
+    CONSTRAINT pk_account PRIMARY KEY (accountId)
 );
 
-ALTER TABLE account
-    ADD CONSTRAINT uc_account_accountnumber UNIQUE (account_number);
+ALTER TABLE ACCOUNT_DEVSU
+    ADD CONSTRAINT uc_account_accountnumber UNIQUE (accountNumber);
 
-ALTER TABLE account
-    ADD CONSTRAINT FK_ACCOUNT_ON_CLIENTID FOREIGN KEY (client_id) REFERENCES client (person_id);
+ALTER TABLE ACCOUNT_DEVSU
+    ADD CONSTRAINT FK_ACCOUNT_ON_CLIENTID FOREIGN KEY (clientId) REFERENCES CLIENT_DEVSU (personId);

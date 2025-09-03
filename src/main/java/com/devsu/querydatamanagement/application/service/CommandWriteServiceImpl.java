@@ -13,6 +13,7 @@ import com.devsu.querydatamanagement.infraestructure.controller.dto.in.ClientReq
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.ICustomerAdapter;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Transactions;
 import com.devsu.querydatamanagement.infraestructure.kafkaProducer.KafkaPublisherAdapter;
+import com.devsu.querydatamanagement.infraestructure.kafkaProducer.dto.TransactionExtractEvent;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
@@ -55,13 +56,14 @@ public class CommandWriteServiceImpl implements CommandWriteService {
     @Override
     public ClientResponse SaveCustomer(ClientRequest clientRequest) throws Exception {
         Client client = iCustomerAdapter.createClient(clientRequest);
+
         kafkaPublisherAdapter.updateCustomerInfoInReadSide(client);
         return responsesMapper.clientToClientResponse(client);
     }
 
     @Override
-    public ClientResponse updateClient(ClientRequest clientRequest) {
-        Client client = iCustomerAdapter.updateClient(clientRequest);
+    public ClientResponse updateClient(ClientRequest clientRequest, String id) {
+        Client client = iCustomerAdapter.updateClient(clientRequest, id);
         kafkaPublisherAdapter.updateCustomerInfoInReadSide(client);
         return responsesMapper.clientToClientResponse(client);
     }
@@ -75,29 +77,35 @@ public class CommandWriteServiceImpl implements CommandWriteService {
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) throws Exception {
         Account account = iCustomerAdapter.createAccount(accountRequest);
-        kafkaPublisherAdapter.updateAccountInfoInReadSide(account);
-        return responsesMapper.accountToAccountResponse(account);
+        AccountResponse accountResponse = responsesMapper.accountToAccountResponse(account);
+        kafkaPublisherAdapter.updateAccountInfoInReadSide(accountResponse);
+        return accountResponse;
     }
 
     @Override
-    public AccountResponse updateAccount(AccountRequest accountRequest) {
-        Account account = iCustomerAdapter.updateAccount(accountRequest);
-        kafkaPublisherAdapter.updateAccountInfoInReadSide(account);
-        return responsesMapper.accountToAccountResponse(account);
+    public AccountResponse updateAccount(AccountRequest accountRequest, String id) {
+        Account account = iCustomerAdapter.updateAccount(accountRequest, id);
+        AccountResponse accountResponse = responsesMapper.accountToAccountResponse(account);
+        kafkaPublisherAdapter.updateAccountInfoInReadSide(accountResponse);
+        return accountResponse;
     }
 
     @Override
     public TransactionResponse saveTransaction(TransactionRequest transactionRequest) throws Exception {
         Transactions transactions = iCustomerAdapter.createTransaction(transactionRequest);
-        kafkaPublisherAdapter.updateTransactionInfoInReadSide(transactions);
-        return responsesMapper.transactionToTransactionResponse(transactions);
+        TransactionResponse transactionResponse = responsesMapper.transactionToTransactionResponse(transactions);
+        kafkaPublisherAdapter.updateTransactionInfoInReadSide(transactionResponse);
+        TransactionExtractEvent transactionExtractEvent = responsesMapper.mapToTransactionExtractEvent(transactions, transactions.getClient());
+        kafkaPublisherAdapter.updateTransactionsToExtractService(transactionExtractEvent);
+        return transactionResponse;
     }
 
     @Override
-    public TransactionResponse updateTransaction(TransactionRequest transactionRequest) {
-        Transactions transactions = iCustomerAdapter.updateTransaction(transactionRequest);
-        kafkaPublisherAdapter.updateTransactionInfoInReadSide(transactions);
-        return responsesMapper.transactionToTransactionResponse(transactions);
+    public TransactionResponse updateTransaction(TransactionRequest transactionRequest, String id) {
+        Transactions transactions = iCustomerAdapter.updateTransaction(transactionRequest, id);
+        TransactionResponse transactionResponse = responsesMapper.transactionToTransactionResponse(transactions);
+        kafkaPublisherAdapter.updateTransactionInfoInReadSide(transactionResponse);
+        return transactionResponse;
     }
 
 

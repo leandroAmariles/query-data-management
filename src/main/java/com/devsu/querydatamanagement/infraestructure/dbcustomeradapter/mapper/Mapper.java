@@ -38,6 +38,7 @@ public interface Mapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDtoTransaction(TransactionRequest dto, @MappingTarget Transactions entity);
 
+    @Mapping(source = "accountRequest.initialBalance", target = "availableBalance")
     Account dtoToEntityAccount(AccountRequest accountRequest);
 
     Transactions dtoToEntityTransaction(TransactionRequest transactionRequest);

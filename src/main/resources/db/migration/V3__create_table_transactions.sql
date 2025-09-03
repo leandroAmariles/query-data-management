@@ -1,17 +1,17 @@
-CREATE TABLE transactions
+CREATE TABLE TRANSACTIONS_DEVSU
 (
-    transaction_id   BIGINT NOT NULL,
-    transaction_date datetime NULL,
-    transaction_type VARCHAR(255) NULL,
+    transactionId   BIGINT NOT NULL AUTO_INCREMENT,
+    transactionDate datetime NULL,
+    transactionType VARCHAR(255) NULL,
     amount           VARCHAR(255) NULL,
     balance          VARCHAR(255) NULL,
-    account_id       BIGINT NOT NULL,
-    person_id        BIGINT NOT NULL,
-    CONSTRAINT pk_transactions PRIMARY KEY (transaction_id)
+    accountId       BIGINT NOT NULL,
+    personId        BIGINT NOT NULL,
+    CONSTRAINT pk_transactions PRIMARY KEY (transactionId)
 );
 
-ALTER TABLE transactions
-    ADD CONSTRAINT FK_TRANSACTIONS_ON_ACCOUNTID FOREIGN KEY (account_id) REFERENCES account (account_id);
+ALTER TABLE TRANSACTIONS_DEVSU
+    ADD CONSTRAINT FK_TRANSACTIONS_ON_ACCOUNTID FOREIGN KEY (accountId) REFERENCES ACCOUNT_DEVSU (accountId);
 
-ALTER TABLE transactions
-    ADD CONSTRAINT FK_TRANSACTIONS_ON_PERSON FOREIGN KEY (person_id) REFERENCES client (person_id);
+ALTER TABLE TRANSACTIONS_DEVSU
+    ADD CONSTRAINT FK_TRANSACTIONS_ON_PERSON FOREIGN KEY (personId) REFERENCES CLIENT_DEVSU (personId);

@@ -10,8 +10,8 @@ public record TransactionRequest (
 
          BigDecimal amount,
         
-         Long idAccount,
+         Long accountId,
 
-         Long idClient
+         Long personId
 ){
 }

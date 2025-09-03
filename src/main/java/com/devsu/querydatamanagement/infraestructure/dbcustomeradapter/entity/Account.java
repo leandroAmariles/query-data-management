@@ -1,6 +1,7 @@
 package com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.List;
 @Where(clause = "status = true")
 @Getter
 @Setter
+@Table(name = "ACCOUNT_DEVSU")
 public class Account {
 
     @Id
@@ -24,8 +26,10 @@ public class Account {
     @Column(unique = true, nullable = false)
     private String accountNumber;
 
+    @Column( nullable = false)
     private String accountType;
 
+    @Column( nullable = false)
     private BigDecimal initialBalance;
 
     private BigDecimal availableBalance;

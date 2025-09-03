@@ -60,6 +60,16 @@ services:
       retries: 3
       timeout: 5s
 
+  redis:
+    image: redis:7.2
+    container_name: redis_container
+    command: [ "redis-server", "--requirepass", "redis" ]
+    ports:
+      - "6379:6379"
+    networks:
+      - app-devsu-network
+    restart: always
+
   query-data-management-service:
     build:
       context: ../query-data-management
@@ -69,12 +79,99 @@ services:
       - mysql-db
       - kafka
     ports:
-      - "8081:8081"
+      - "8081:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/devsu-database
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/devsu-database?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: sa
       SPRING_DATASOURCE_PASSWORD: password
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SERVER_PORT: 8080
+    networks:
+      - app-devsu-network
+
+  query-read-service:
+    build:
+      context: ../query-read-service
+      dockerfile: Dockerfile
+    container_name: query-read-service
+    depends_on:
+      - redis
+      - mysql-db
+      - kafka
+    ports:
+      - "8082:8080"
+    environment:
+      QUERY_DATA_SERVICE_URL: http://query-data-management-service:8080
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SERVER_PORT: 8080
+    networks:
+      - app-devsu-network
+
+  audit-transactions-service:
+    build:
+      context: ../audit-transactions
+      dockerfile: Dockerfile
+    container_name: audit-transactions-service
+    depends_on:
+      - redis
+      - mysql-db
+      - kafka
+      - query-data-management-service
+    ports:
+      - "8083:8080"
+    expose:
+      - 8083
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/devsu-database?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: password
+      QUERY_DATA_SERVICE_URL: http://query-data-management-service:8080
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SERVER_PORT: 8080
+    networks:
+      - app-devsu-network
+
+  account-service:
+    build:
+      context: ../account-service
+      dockerfile: Dockerfile
+    container_name: account-service
+    depends_on:
+      - redis
+      - mysql-db
+      - kafka
+    ports:
+      - "8084:8080"
+    expose:
+      - "8084"
+    environment:
+      QUERY_DATA_SERVICE_URL: http://query-data-management-service:8080
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SERVER_PORT: 8080
+    networks:
+      - app-devsu-network
+
+  customer-service:
+    build:
+      context: ../customer-service
+      dockerfile: Dockerfile
+    container_name: customer-service
+    depends_on:
+      - redis
+      - mysql-db
+      - kafka
+    ports:
+      - "8085:8080"
+    expose:
+      - 8085
+    environment:
+      QUERY_DATA_SERVICE_URL: http://query-data-management-service:8080
+      QUERY_DATA_CACHE: http://query-read-service:8080
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SERVER_PORT: 8080
     networks:
       - app-devsu-network
 

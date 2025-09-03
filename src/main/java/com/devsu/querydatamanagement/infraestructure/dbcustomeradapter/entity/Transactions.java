@@ -5,18 +5,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Entity
 @Getter
 @Setter
+@Table(name = "TRANSACTIONS_DEVSU")
 public class Transactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
 
-    private LocalDateTime transactionDate;
+    private LocalDateTime transactionDate = LocalDateTime.parse(LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
 
     private String transactionType;
 
@@ -29,7 +32,7 @@ public class Transactions {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "person_id", nullable = false)
+    @JoinColumn(name = "personId", nullable = false)
     private Client client;
 
 }

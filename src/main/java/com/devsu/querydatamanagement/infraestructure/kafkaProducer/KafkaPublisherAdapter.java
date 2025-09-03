@@ -1,8 +1,9 @@
 package com.devsu.querydatamanagement.infraestructure.kafkaProducer;
 
-import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Account;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.out.AccountResponse;
+import com.devsu.querydatamanagement.infraestructure.controller.dto.out.TransactionResponse;
 import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Client;
-import com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity.Transactions;
+import com.devsu.querydatamanagement.infraestructure.kafkaProducer.dto.TransactionExtractEvent;
 
 public interface KafkaPublisherAdapter {
 
@@ -10,7 +11,9 @@ public interface KafkaPublisherAdapter {
 
     void deleteCustomerInfoInReadSide(Long clientId);
 
-    void updateAccountInfoInReadSide(Account account);
+    void updateAccountInfoInReadSide(AccountResponse account);
 
-    void updateTransactionInfoInReadSide(Transactions transactions);
+    void updateTransactionInfoInReadSide(TransactionResponse transactions);
+
+    void updateTransactionsToExtractService(TransactionExtractEvent transaction);
 }

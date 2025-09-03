@@ -24,17 +24,17 @@ public interface ICustomerAdapter {
 
     Client createClient(ClientRequest client) throws Exception;
 
-    Client updateClient(ClientRequest client);
+    Client updateClient(ClientRequest client, String id);
 
     Client deleteClientById(Long id);
 
     Account createAccount(AccountRequest account);
 
-    Account updateAccount(AccountRequest account);
+    Account updateAccount(AccountRequest account, String id);
 
     Transactions createTransaction(TransactionRequest transaction);
 
-    Transactions updateTransaction(TransactionRequest transaction);
+    Transactions updateTransaction(TransactionRequest transaction, String id);
 
     Boolean validateBalance(Long accountId, BigDecimal amount);
 

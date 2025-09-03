@@ -3,12 +3,15 @@ package com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Entity
 @Getter
 @Setter
+@ToString
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "PERSON_DEVSU")
 public class Person {
 
     @Id
