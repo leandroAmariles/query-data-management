@@ -3,8 +3,7 @@ package com.devsu.querydatamanagement.infraestructure.dbcustomeradapter.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -16,6 +15,9 @@ import java.util.List;
 @Where(clause = "status = true")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ACCOUNT_DEVSU")
 public class Account {
 

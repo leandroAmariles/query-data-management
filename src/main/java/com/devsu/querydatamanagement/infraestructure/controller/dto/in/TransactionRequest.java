@@ -1,7 +1,10 @@
 package com.devsu.querydatamanagement.infraestructure.controller.dto.in;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 
+@Builder
 public record TransactionRequest (
 
          Long idTransaction,

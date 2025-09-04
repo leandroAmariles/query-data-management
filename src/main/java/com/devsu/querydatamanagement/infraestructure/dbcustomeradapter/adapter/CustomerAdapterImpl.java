@@ -121,7 +121,6 @@ public class CustomerAdapterImpl implements ICustomerAdapter {
         BigDecimal balance = calculateAvailableBalance(account, transactions);
         account.setAvailableBalance(balance);
         accountRepository.save(account);
-        account.setAvailableBalance(initialBalance);
         transactions.setAccount(account);
         transactions.setBalance(balance.toString());
         return transactionsRepository.save(transactions);
@@ -162,6 +161,5 @@ public class CustomerAdapterImpl implements ICustomerAdapter {
         };
 
     }
-
 
 }
